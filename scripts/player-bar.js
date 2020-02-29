@@ -30,4 +30,22 @@ $('button#previous').on('click', function(){
   player.playPause(previousSong);
 });
 
+//Changing a song's position based on time slider input
+$('#time-control input').on('input', function(event){
+  player.skipTo(event.target.value);
+});
+
+
+
+//Setting track slider to reflect the time position of the song
+setInterval( ()=>{
+    if (player.playState !== 'playing') {return; }
+    const currentTime = player.getTime();
+    const duration = player.getDuration();
+    const percent = (currentTime / duration) * 100;
+    $('#time-control .current-time').text(currentTime);
+    $('#time-control .total-time').text(duration);
+    $('#time-control input').val(percent);
+  }, 1000 );
+
 }
