@@ -1,6 +1,7 @@
 {
   $('button#play-pause').on('click', function(){
     player.playPause();
+    //helper.playPauseAndUpdate();
     $(this).attr('playstate', player.playState);
   });
 
@@ -14,7 +15,9 @@ $('button#next').on('click', function(){
   if (nextSongIndex >= album.songs.length) { return; }
 
   const nextSong = album.songs[nextSongIndex];
-  player.playPause(nextSong);
+  //player.playPause(nextSong);
+  helper.playPauseAndUpdate(nextSong);
+  //$('#time-control .total-time').text(player.getDuration());
 });
 
 
@@ -25,17 +28,23 @@ $('button#previous').on('click', function(){
   const currentSongIndex = album.songs.indexOf(player.currentlyPlaying);
   const previousSongIndex = currentSongIndex - 1;
   if (previousSongIndex < 0) {return; }
-
+  //const duration = player.getDuration();
   const previousSong = album.songs[previousSongIndex];
-  player.playPause(previousSong);
+
+  //player.playPause(previousSong);
+  helper.playPauseAndUpdate(previousSong);
+  //$('#time-control .total-time').text(previousSong.duration);
 });
 
-//Changing a song's position based on time slider input
+//Setting a song's position based on time slider input
 $('#time-control input').on('input', function(event){
   player.skipTo(event.target.value);
 });
 
-
+//Setting the volume control input
+$('#volume-control input').on('input', function(event){
+  player.setVolume(event.target.value);
+});
 
 //Setting track slider to reflect the time position of the song
 setInterval( ()=>{
@@ -43,8 +52,8 @@ setInterval( ()=>{
     const currentTime = player.getTime();
     const duration = player.getDuration();
     const percent = (currentTime / duration) * 100;
-    $('#time-control .current-time').text(currentTime);
-    $('#time-control .total-time').text(duration);
+    $('#time-control .current-time').text(player.prettyTime(currentTime));
+    //$('#time-control .total-time').text(duration);
     $('#time-control input').val(percent);
   }, 1000 );
 
