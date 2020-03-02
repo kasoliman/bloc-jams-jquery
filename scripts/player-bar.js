@@ -1,8 +1,10 @@
 {
   $('button#play-pause').on('click', function(){
-    player.playPause();
-    //helper.playPauseAndUpdate();
+    const playingSongindex = album.songs.indexOf(player.currentlyPlaying);
+    const playingSong = album.songs[playingSongindex];
+    helper.playPauseAndUpdate(playingSong);
     $(this).attr('playstate', player.playState);
+    //$('#time-control .total-time').text(player.prettyTime(duration));
   });
 
 
@@ -53,7 +55,6 @@ setInterval( ()=>{
     const duration = player.getDuration();
     const percent = (currentTime / duration) * 100;
     $('#time-control .current-time').text(player.prettyTime(currentTime));
-    //$('#time-control .total-time').text(duration);
     $('#time-control input').val(percent);
   }, 1000 );
 
